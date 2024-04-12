@@ -152,9 +152,32 @@ public class PNG2QL
      */
     public static void main(String[] args)
     {
+        File from=null,to=null;
+        boolean trim=false,ignoreGreen=false;
+
+        for(int i=0;i<args.length;i++)
+        {
+            if(args[i].equals("-t"))
+                trim=true;
+            else if(args[i].equals("-ng"))
+                ignoreGreen=true;
+            else if(from==null)
+                from=new File(args[++i]);
+            else if(to==null)
+                to=new File(args[++i]);
+        }
+
+        if((from==null)||(to==null))
+        {
+            System.out.println("Usage: [-t] [-ng] pngfile scrfile\n\n\t -t remove blank lines\n\t-ng no green in output");
+            System.exit(0);
+        }
+
         try
         {
-            convert(true,true,new File("/home/simon/code/ql/moon.png"),new File("/home/simon/code/ql/moon.scr"));
+            convert(trim,ignoreGreen,from,to);
+
+            //convert(true,true,new File("/home/simon/code/ql/moon.png"),new File("/home/simon/code/ql/moon.scr"));
             //convert(false,false,new File("/home/simon/code/ql/skyrim2.png"),new File("/home/simon/code/ql/skyrim.scr"));
         }
         catch(final Exception e)
